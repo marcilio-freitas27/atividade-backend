@@ -1,0 +1,18 @@
+{
+  "name": "atividade",
+  "version": "1.0.0",
+  "description": "atividade backend",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Marcílio Freitas",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "msnodesqlv8": "^2.5.0",
+    "mssql": "^8.1.2"
+  }
+}
