@@ -2,18 +2,15 @@ const express = require('express')
 const app = express()
 const port = 3000
 const mssql = require('mssql/msnodesqlv8');
-const cors = require('cors');
 
 app.use(express.json());
 
-app.use(cors());
-
 const conn = new mssql.ConnectionPool({
     driver: "msnodesqlv8",
-    server: 'localhost',
+    server: 'SISTEMA-SSD\\SQLEXPRESS',
     database: 'Bomboniere',
     user: 'sa',
-    password: 'Sql2@19'
+    password: '_43690'
 })
 
 app.get('/con', (req,res) => {
@@ -60,9 +57,9 @@ app.delete('/doces/:id', (req, res) => {
 })
 
 app.post('/doces', (req, res) => {
-  const nome = req.body.nome;
-  const tipo = req.body.tipo;
-  const quantidade = req.body.quantidade;
+  const nome = '\'' + req.body.Nome + '\'';
+  const tipo = '\'' + req.body.Tipo + '\'';
+  const quantidade = '\'' + req.body.Quantidade + '\'';
   conn.connect().then((pool) => {
     const queryStr = `INSERT INTO Doces (Nome, Tipo, Quantidade) VALUES(${nome}, ${tipo}, ${quantidade})`
     pool.query(queryStr).then((rows) => {
@@ -72,19 +69,14 @@ app.post('/doces', (req, res) => {
 })
 
 app.put('/doces/:id', (req, res) => {
-  const codigo = req.params.id;
-  const nome = req.body.Nome;
-  const tipo = req.body.Tipo;
-  const quantidade = req.body.Quantidade;
+  const id = req.params.id;
+  const nome = '\'' + req.body.Nome + '\'';
+  const tipo = '\'' + req.body.Tipo + '\'';
+  const quantidade = '\'' + req.body.Quantidade + '\'';
   conn.connect().then((pool) => {
-    const queryStr = `UPDATE Doces SET Codigo = ${codigo},
-    Nome = ${nome}, Tipo = ${tipo}, Quantidade = ${quantidade} WHERE Codigo = ${codigo}`
-    pool.query(queryStr).then((rows) => {
-      if(rows.recordset.length > 0){
-        res.send(rows.recordset[0]);
-      }else {
-        res.send(404).status(rows.recordset);
-      }
+    const queryStr = `UPDATE Doces SET Nome = ${nome}, Tipo = ${tipo}, Quantidade = ${quantidade} WHERE Codigo = ${id}`
+    pool.query(queryStr).then((rows) => {      
+        res.send(rows.recordset);
     })
   })
 })
